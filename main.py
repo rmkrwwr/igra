@@ -3,6 +3,7 @@ import sys
 import argparse
 from game.snake import Snake
 from game.config import *
+from game.apple import Apple
 
 class TemporaryApple:
     def __init__(self, size, width, height):
@@ -32,7 +33,7 @@ class Game:
         self.game_over = False
         self.paused = False
         self.snake = Snake(WIDTH // 2, HEIGHT // 2, CELL_SIZE)
-        self.apple = TemporaryApple(CELL_SIZE, WIDTH, HEIGHT)  #проверка яблока временное
+        self.apple = Apple(CELL_SIZE, WIDTH, HEIGHT)
         self.font = pygame.font.Font(None, 36)
         self.big_font = pygame.font.Font(None, 72)
         self.frame_count = 0
@@ -130,7 +131,7 @@ class Game:
     def restart_game(self):
         """Перезапуск игры"""
         self.snake = Snake(WIDTH // 2, HEIGHT // 2, CELL_SIZE)
-        self.apple = TemporaryApple(CELL_SIZE, WIDTH, HEIGHT)
+        self.apple = Apple(CELL_SIZE, WIDTH, HEIGHT)
         self.score = 0
         self.game_over = False
         self.paused = False
