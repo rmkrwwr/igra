@@ -1,39 +1,61 @@
 import pygame
-from .base import GameObject
-class Snake(GameObject):
+from .config import *
+
+class Snake:
     def __init__(self, x, y, size):
-        super().__init__(x, y, size, size, (0, 255, 0))
-        self.direction = (1, 0)
-        self.body = [self.rect.copy()]
-        self.grow = False
+        """Инициализация змейки"""
         self.size = size
+        self.direction = RIGHT
+        self.length = INITIAL_LENGTH
+
+        #тело змейки как список прямоугольников
+        self.body = []
+        for i in range(self.length):
+            segment = pygame.Rect(
+                x - i * size,  # следующий сегмент левее
+                y,
+                size,
+                size
+            )
+            self.body.append(segment)
+
+        self.grow_next_move = False
+        self.color = GREEN
+        self.head_color = (0, 200, 0)
 
     def move(self):
-        """Движение змейки"""
+        """Движение змейки вперед"""
+
         head = self.body[-1].copy()
-        head.move_ip(self.direction[0] * self.size, self.direction[1] * self.size)
+        head.x += self.direction[0] * self.size
+        head.y += self.direction[1] * self.size
+
         self.body.append(head)
-        if not self.grow:
+        if not self.grow_next_move:
             self.body.pop(0)
+        else:
+            self.grow_next_move = False
+            self.length += 1
 
-        self.grow = False
-        self.rect = self.body[-1]
-
-    def change_direction(self, dx, dy):
+    def change_direction(self, new_direction):
         """Изменение направления движения"""
+        opposite_x = -self.direction[0]
+        opposite_y = -self.direction[1]
 
-        if (dx, dy) != (-self.direction[0], -self.direction[1]):
-            self.direction = (dx, dy)
+        if new_direction[0] != opposite_x or new_direction[1] != opposite_y:
+            self.direction = new_direction
+
+    def grow(self):
+        """Команда роста на следующем ходу"""
+        self.grow_next_move = True
 
     def check_collision(self, width, height):
-        """Проверка столкновений с границами и собой"""
+        """Проверка столкновений"""
         head = self.body[-1]
-
 
         if (head.left < 0 or head.right > width or
                 head.top < 0 or head.bottom > height):
             return True
-
 
         for segment in self.body[:-1]:
             if head.colliderect(segment):
@@ -41,16 +63,28 @@ class Snake(GameObject):
 
         return False
 
-    def draw(self, screen):
-        """Отрисовка змейки"""
-        for segment in self.body:
-            pygame.draw.rect(screen, self.color, segment)
-            pygame.draw.rect(screen, (0, 200, 0), segment, 1)
+    def check_apple_collision(self, apple_rect):
+        """Проверка столкновения с яблоком"""
+        head = self.body[-1]
+        return head.colliderect(apple_rect)
 
     def get_head_position(self):
         """Получение позиции головы"""
-        return self.body[-1].center if self.body else (0, 0)
+        return (self.body[-1].x, self.body[-1].y)
 
-    def get_length(self):
-        """Получение длины змейки"""
-        return len(self.body)
+    def get_positions(self):
+        """Получение всех позиций змейки (для отрисовки)"""
+        return [(seg.x, seg.y) for seg in self.body]
+
+    def draw(self, screen):
+        """Отрисовка змейки"""
+        for i, segment in enumerate(self.body):
+            if i == len(self.body) - 1:
+                pygame.draw.rect(screen, self.head_color, segment)
+            else:
+                pygame.draw.rect(screen, self.color, segment)
+            pygame.draw.rect(screen, DARK_GREEN, segment, 1)
+
+    def reset(self, x, y):
+        """Сброс змейки в начальное состояние"""
+        self.__init__(x, y, self.size)
