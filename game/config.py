@@ -22,4 +22,4 @@ RIGHT = (1, 0)
 
 #константа для игры добавление
 INITIAL_SPEED = 10
-INITIAL_LENGTH = 3
+INITIAL_LENGTH = 1
