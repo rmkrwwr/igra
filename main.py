@@ -7,10 +7,11 @@ from game.apple import Apple
 from game.score_manager import ScoreManager
 
 class TemporaryApple:
-    def __init__(self, size, width, height):
-        self.rect = pygame.Rect(100, 100, size, size)
-        self.color = RED
-
+    def __init__(self, player_name="Player", speed=10, difficulty="medium"):
+        """Инициализация игры"""
+        start_y = max(40, HEIGHT // 2)
+        start_y = (start_y // CELL_SIZE) * CELL_SIZE
+        self.snake = Snake(WIDTH // 2, start_y, CELL_SIZE)
     def respawn(self, snake_body):
         """Временный метод - потом заменит второй участник"""
         self.rect.x = 300
@@ -92,8 +93,8 @@ class Game:
     def draw_grid(self):
         """Отрисовка сетки"""
         for x in range(0, WIDTH, CELL_SIZE):
-            pygame.draw.line(self.screen, DARK_GREEN, (x, 0), (x, HEIGHT), 1)
-        for y in range(0, HEIGHT, CELL_SIZE):
+            pygame.draw.line(self.screen, DARK_GREEN, (x, 40), (x, HEIGHT), 1)  # Изменено: начинаем с y=40
+        for y in range(40, HEIGHT, CELL_SIZE):  # Изменено: начинаем с y=40
             pygame.draw.line(self.screen, DARK_GREEN, (0, y), (WIDTH, y), 1)
 
     def draw_ui(self):

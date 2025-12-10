@@ -25,7 +25,7 @@ class Snake:
 
     def move(self):
         """Движение змейки вперед"""
-
+        # Голова - последний элемент в списке
         head = self.body[-1].copy()
         head.x += self.direction[0] * self.size
         head.y += self.direction[1] * self.size
@@ -50,12 +50,12 @@ class Snake:
         self.grow_next_move = True
 
     def check_collision(self, width, height):
-        head = self.body[0]
+        """Проверка столкновения с границами и с собой"""
+        head = self.body[-1]
         if (head.x < 0 or head.x >= width or
                 head.y < 40 or head.y >= height):
             return True
-
-        for segment in self.body[1:]:
+        for segment in self.body[:-1]:
             if head.colliderect(segment):
                 return True
 

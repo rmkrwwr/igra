@@ -44,7 +44,7 @@ def run_tests():
     print(" класс!")
 
     print("столкновения с границами")
-    edge_snake = Snake(0, 0, 20)
+    edge_snake = Snake(0, 40, 20)  # Начинаем с y=40 (ниже панели)
     edge_snake.change_direction(LEFT)
     for i in range(3):
         edge_snake.move()
