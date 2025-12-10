@@ -26,11 +26,10 @@ class Apple(GameObject):
         появляется ниже панели (y от 40)
         Яблоко всегда размещается на координатах, кратных size
         """
-        # яблоко ниже панели
+
         max_x = width - size
         max_y = height - size
 
-        # x как обычно y от 40
         x = random.randrange(0, max_x + 1, size)
         y = random.randrange(40, max_y + 1, size)
 
