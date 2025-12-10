@@ -1,10 +1,3 @@
-"""
-ТОЧКА ВХОДА В ИГРУ
-Запуск: python main.py
-Управление: стрелки или WASD
-Цель: съедать яблоки, не врезаться
-"""
-
 import pygame
 import random
 from .base import GameObject
@@ -13,25 +6,27 @@ from .config import *
 
 class Apple(GameObject):
     def __init__(self, size, width, height):
+        # Яблоко должно спавниться НИЖЕ панели (y от 40)
         max_x = width - size
         max_y = height - size
 
+        # x как обычно, y начиная с 40
         x = random.randrange(0, max_x + 1, size)
-        y = random.randrange(0, max_y + 1, size)
+        y = random.randrange(40, max_y + 1, size)  # ИЗМЕНИЛОСЬ: начинаем с 40
 
         super().__init__(x, y, size, size, RED)
         self.size = size
         self.width = width
         self.height = height
         self.max_x = max_x
-        self.max_y = max_y
+        self.max_y = max_y - 40  # Учитываем что y начинается с 40
 
     def respawn(self, snake_body):
         max_attempts = 1000
 
         for attempt in range(max_attempts):
             x = random.randrange(0, self.max_x + 1, self.size)
-            y = random.randrange(0, self.max_y + 1, self.size)
+            y = random.randrange(40, self.max_y + 40 + 1, self.size)  # ИЗМЕНИЛОСЬ: начинаем с 40
 
             new_rect = pygame.Rect(x, y, self.size, self.size)
 
@@ -46,35 +41,13 @@ class Apple(GameObject):
                 self.rect.y = y
                 return True
 
-        for x in range(0, self.max_x + 1, self.size):
-            for y in range(0, self.max_y + 1, self.size):
-                test_rect = pygame.Rect(x, y, self.size, self.size)
-                free = True
-                for segment in snake_body:
-                    if test_rect.colliderect(segment):
-                        free = False
-                        break
-                if free:
-                    self.rect.x = x
-                    self.rect.y = y
-                    return True
-
-        self.rect.x = -100
-        self.rect.y = -100
-        return False
 
     def draw(self, screen):
-        if self.rect.right > self.width:
-            self.rect.x = self.width - self.size
-        if self.rect.bottom > self.height:
-            self.rect.y = self.height - self.size
-        if self.rect.left < 0:
-            self.rect.x = 0
-        if self.rect.top < 0:
-            self.rect.y = 0
-
+        """Отрисовка яблока с эффектом объема"""
+        # Основной круг
         pygame.draw.rect(screen, self.color, self.rect)
 
+        # Блики для объема
         highlight_rect = pygame.Rect(
             self.rect.x + self.size // 4,
             self.rect.y + self.size // 4,
@@ -83,6 +56,7 @@ class Apple(GameObject):
         )
         pygame.draw.rect(screen, (255, 150, 150), highlight_rect)
 
+        # Хвостик яблока
         stem_rect = pygame.Rect(
             self.rect.x + self.size // 2 - 1,
             self.rect.y - 3,
