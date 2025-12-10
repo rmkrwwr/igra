@@ -3,6 +3,7 @@
 запускает игру обрабатывает ввод
 """
 
+from game.sound import sound_manager
 from game.database import db
 import pygame
 import sys
@@ -49,6 +50,10 @@ class Game:
         self.player_name = "Player"
         self.apples_eaten = 0
         self.game_start_time = 0
+        sound_manager.load_sound("apple", "sounds/apple_bite.mp3")
+
+        if sound_manager.sounds["apple"] is None:
+            sound_manager.load_sound("apple", "apple_bite.mp3")
 
     def handle_events(self):
         """
@@ -90,6 +95,7 @@ class Game:
             self.score += 10
             self.apples_eaten += 1
             self.apple.respawn(self.snake.body)
+            sound_manager.play("apple")
             print(f"скушал яблочко! счёт: {self.score}")
 
         if self.snake.check_collision(WIDTH, HEIGHT):
