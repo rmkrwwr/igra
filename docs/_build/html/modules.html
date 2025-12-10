@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+
+<html lang="ru" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>модули игры &#8212; документация змейка 1</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=47a0e12c"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/translations.js?v=cd1d70c9"></script>
+    <link rel="index" title="Алфавитный указатель" href="genindex.html" />
+    <link rel="search" title="Поиск" href="search.html" />
+    <link rel="next" title="использование игры" href="usage.html" />
+    <link rel="prev" title="Документация игры «Змейка»" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-game.config">
+<span id="id1"></span><h1>модули игры<a class="headerlink" href="#module-game.config" title="Ссылка на этот заголовок">¶</a></h1>
+<p>Конфигурационный модуль игры «Змейка».</p>
+<p>Содержит все константы и настройки, используемые в игре:
+- Размеры окна и игрового поля
+- Цвета для различных элементов
+- Направления движения змейки
+- Начальные параметры игры</p>
+<dl>
+<dt>Constants:</dt><dd><p>WIDTH (int): ширина игрового окна в пикселях
+HEIGHT (int): высота игрового окна в пикселях
+CELL_SIZE (int): размер одной клетки игровой сетки
+FIELD_OFFSET_Y (int): отступ сверху для игрового поля</p>
+<p>BLACK (tuple): цвет черный в формате RGB
+WHITE (tuple): цвет белый в формате RGB
+RED (tuple): цвет красный в формате RGB
+GREEN (tuple): цвет зеленый в формате RGB
+BLUE (tuple): цвет синий в формате RGB
+YELLOW (tuple): цвет желтый в формате RGB
+DARK_GREEN (tuple): цвет темно-зеленый в формате RGB
+GRAY (tuple): цвет серый в формате RGB</p>
+<p>UP (tuple): направление вверх (dx=0, dy=-1)
+DOWN (tuple): направление вниз (dx=0, dy=1)
+LEFT (tuple): направление влево (dx=-1, dy=0)
+RIGHT (tuple): направление вправо (dx=1, dy=0)</p>
+<p>INITIAL_SPEED (int): начальная скорость игры (кадров в секунду)
+INITIAL_LENGTH (int): начальная длина змейки</p>
+</dd>
+</dl>
+<p id="module-game.base">базовый класс для всех объектов игры</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="game.base.GameObject">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">game.base.</span></span><span class="sig-name descname"><span class="pre">GameObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.base.GameObject" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Базовые классы: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>базовый объект игры
+умеет рисоваться и проверять столкновения</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="game.base.GameObject.collides_with">
+<span class="sig-name descname"><span class="pre">collides_with</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.base.GameObject.collides_with" title="Ссылка на это определение">¶</a></dt>
+<dd><p>проверяет столкновение с другим объектом
+other - другой объект
+возвращает True если столкнулись</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.base.GameObject.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">screen</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.base.GameObject.draw" title="Ссылка на это определение">¶</a></dt>
+<dd><p>рисует объект на экране
+screen - куда рисовать</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.base.GameObject.get_position">
+<span class="sig-name descname"><span class="pre">get_position</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#game.base.GameObject.get_position" title="Ссылка на это определение">¶</a></dt>
+<dd><p>возвращает позицию</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.base.GameObject.set_position">
+<span class="sig-name descname"><span class="pre">set_position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.base.GameObject.set_position" title="Ссылка на это определение">¶</a></dt>
+<dd><p>ставит новую позицию
+x y - куда поставить</p>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-game.snake">класс змейки
+реализует всю логику поведения
+змейки: движение, управление, рост, столкновения и отрисовку.
+Класс управляет телом змейки как списком сегментов и обеспечивает
+все необходимые взаимодействия с игровым миром</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="game.snake.Snake">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">game.snake.</span></span><span class="sig-name descname"><span class="pre">Snake</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.snake.Snake" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Базовые классы: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>змейка в игре
+двигается ест яблоки и все дела</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="game.snake.Snake.change_direction">
+<span class="sig-name descname"><span class="pre">change_direction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_direction</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.snake.Snake.change_direction" title="Ссылка на это определение">¶</a></dt>
+<dd><p>меняет направление
+new_direction - куда повернуть
+нельзя повернуть на 180 градусов</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.snake.Snake.check_apple_collision">
+<span class="sig-name descname"><span class="pre">check_apple_collision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">apple_rect</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.snake.Snake.check_apple_collision" title="Ссылка на это определение">¶</a></dt>
+<dd><p>проверяет съел ли яблоко
+apple_rect - прямоугольник яблока
+возвращает True если съел</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.snake.Snake.check_collision">
+<span class="sig-name descname"><span class="pre">check_collision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.snake.Snake.check_collision" title="Ссылка на это определение">¶</a></dt>
+<dd><p>проверяет столкновения
+с границами и с собой
+width height - размер поля
+возвращает True если врезался</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.snake.Snake.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">screen</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.snake.Snake.draw" title="Ссылка на это определение">¶</a></dt>
+<dd><p>рисует змейку
+screen - куда рисовать
+голова другого цвета</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.snake.Snake.get_head_position">
+<span class="sig-name descname"><span class="pre">get_head_position</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#game.snake.Snake.get_head_position" title="Ссылка на это определение">¶</a></dt>
+<dd><p>возвращает где голова</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.snake.Snake.get_positions">
+<span class="sig-name descname"><span class="pre">get_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#game.snake.Snake.get_positions" title="Ссылка на это определение">¶</a></dt>
+<dd><p>возвращает все позиции змейки
+для отрисовки или еще чего</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.snake.Snake.grow">
+<span class="sig-name descname"><span class="pre">grow</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#game.snake.Snake.grow" title="Ссылка на это определение">¶</a></dt>
+<dd><p>говорит что на следующем ходу нужно вырасти
+Подготавливает змейку к росту на следующем шаге движения.</p>
+<p>флаг grow_next_move в True что приведет к увеличению
+длины змейки на 1 сегмент при следующем вызове метода move()</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.snake.Snake.move">
+<span class="sig-name descname"><span class="pre">move</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#game.snake.Snake.move" title="Ссылка на это определение">¶</a></dt>
+<dd><p>двигает змейку вперед
+если должен расти - добавляет сегмент</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.snake.Snake.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.snake.Snake.reset" title="Ссылка на это определение">¶</a></dt>
+<dd><p>сбрасывает змейку в начальное состояние
+x y - новая позиция</p>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-game.apple">класс яблока
+представляющий съедобный объект в игре
+Яблоко случайным образом появляется на игровом поле и увеличивает
+длину змейки при поедании. Класс обеспечивает корректное размещение
+яблока без пересечения с телом змейки.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="game.apple.Apple">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">game.apple.</span></span><span class="sig-name descname"><span class="pre">Apple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.apple.Apple" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Базовые классы: <a class="reference internal" href="#game.base.GameObject" title="game.base.GameObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameObject</span></code></a></p>
+<p>яблоко которое ест змейка
+появляется в свободных клетках</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="game.apple.Apple.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">screen</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.apple.Apple.draw" title="Ссылка на это определение">¶</a></dt>
+<dd><p>рисует яблоко с бликами
+screen - куда рисовать</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.apple.Apple.respawn">
+<span class="sig-name descname"><span class="pre">respawn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snake_body</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.apple.Apple.respawn" title="Ссылка на это определение">¶</a></dt>
+<dd><p>перемещает яблоко в новое место
+snake_body - тело змейки чтобы не пересекаться
+пытается 1000 раз найти свободное место
+возвращает True если нашел</p>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-game.graphics">графика для игры
+класс Graphics отвечающий за всю визуальную составляющую игры:
+отрисовку интерфейса игровых объектов  экранов состояний (пауза, game over)
+и вспомогательных элементов (сетка, счет)</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="game.graphics.Graphics">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">game.graphics.</span></span><span class="sig-name descname"><span class="pre">Graphics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.graphics.Graphics" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Базовые классы: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>отвечает за всю графику в игре
+рисует интерфейс паузу game over</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="game.graphics.Graphics.create_texture">
+<span class="sig-name descname"><span class="pre">create_texture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.graphics.Graphics.create_texture" title="Ссылка на это определение">¶</a></dt>
+<dd><p>создает текстуру по цвету
+name - имя текстуры
+color - какой цвет</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.graphics.Graphics.draw_game_over">
+<span class="sig-name descname"><span class="pre">draw_game_over</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">screen</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">player_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.graphics.Graphics.draw_game_over" title="Ссылка на это определение">¶</a></dt>
+<dd><p>рисует экран game over
+screen - куда рисовать
+score - финальный счет
+player_name - имя игрока</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.graphics.Graphics.draw_grid">
+<span class="sig-name descname"><span class="pre">draw_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">screen</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.graphics.Graphics.draw_grid" title="Ссылка на это определение">¶</a></dt>
+<dd><p>рисует сетку поля
+screen - куда рисовать
+сетка от y=40</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.graphics.Graphics.draw_pause">
+<span class="sig-name descname"><span class="pre">draw_pause</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">screen</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.graphics.Graphics.draw_pause" title="Ссылка на это определение">¶</a></dt>
+<dd><p>рисует экран паузы
+screen - куда рисовать</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.graphics.Graphics.draw_score">
+<span class="sig-name descname"><span class="pre">draw_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">screen</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high_score</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">player_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.graphics.Graphics.draw_score" title="Ссылка на это определение">¶</a></dt>
+<dd><p>рисует панель счета
+screen - куда рисовать
+score - текущий счет
+high_score - рекорд
+player_name - имя игрока</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.graphics.Graphics.draw_snake">
+<span class="sig-name descname"><span class="pre">draw_snake</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">screen</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snake_body</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.graphics.Graphics.draw_snake" title="Ссылка на это определение">¶</a></dt>
+<dd><p>рисует змейку с глазами
+screen - куда рисовать
+snake_body - тело змейки
+голова с глазами</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.graphics.Graphics.load_textures">
+<span class="sig-name descname"><span class="pre">load_textures</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#game.graphics.Graphics.load_textures" title="Ссылка на это определение">¶</a></dt>
+<dd><p>загружает текстуры
+сейчас просто цветные квадраты</p>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-game.score_manager">менеджер результатов
+сохраняет и загружает счета</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="game.score_manager.ScoreManager">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">game.score_manager.</span></span><span class="sig-name descname"><span class="pre">ScoreManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'scores.txt'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.score_manager.ScoreManager" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Базовые классы: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>управляет счетами игроков
+сохраняет в файл загружает из файла</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="game.score_manager.ScoreManager.get_high_score">
+<span class="sig-name descname"><span class="pre">get_high_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">difficulty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.score_manager.ScoreManager.get_high_score" title="Ссылка на это определение">¶</a></dt>
+<dd><p>возвращает рекорд
+difficulty - если указана то для этой сложности
+иначе для всех</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.score_manager.ScoreManager.get_player_stats">
+<span class="sig-name descname"><span class="pre">get_player_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">player_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.score_manager.ScoreManager.get_player_stats" title="Ссылка на это определение">¶</a></dt>
+<dd><p>возвращает статистику игрока
+player_name - имя игрока
+возвращает словарь с лучшим счетом общим числом игр и средним счетом</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.score_manager.ScoreManager.get_top_scores">
+<span class="sig-name descname"><span class="pre">get_top_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">difficulty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.score_manager.ScoreManager.get_top_scores" title="Ссылка на это определение">¶</a></dt>
+<dd><p>возвращает топ-N результатов
+count - сколько результатов
+difficulty - если указана то для этой сложности</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.score_manager.ScoreManager.load_scores">
+<span class="sig-name descname"><span class="pre">load_scores</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#game.score_manager.ScoreManager.load_scores" title="Ссылка на это определение">¶</a></dt>
+<dd><p>загружает результаты из файла
+если файла нет - ничего не делает</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.score_manager.ScoreManager.save_score">
+<span class="sig-name descname"><span class="pre">save_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">difficulty</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game.score_manager.ScoreManager.save_score" title="Ссылка на это определение">¶</a></dt>
+<dd><p>сохраняет новый результат
+name - имя игрока
+score - счет
+difficulty - сложность
+добавляет дату и время</p>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-main">главный файл игры
+запускает игру обрабатывает ввод</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="main.Game">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">Game</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">player_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Player'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">difficulty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'medium'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main.Game" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Базовые классы: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>главный класс игры
+управляет всем игровым процессом</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="main.Game.draw_grid">
+<span class="sig-name descname"><span class="pre">draw_grid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.Game.draw_grid" title="Ссылка на это определение">¶</a></dt>
+<dd><p>рисует сетку поля</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.Game.draw_ui">
+<span class="sig-name descname"><span class="pre">draw_ui</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.Game.draw_ui" title="Ссылка на это определение">¶</a></dt>
+<dd><p>рисует интерфейс игры
+счет панель паузу game over</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.Game.handle_events">
+<span class="sig-name descname"><span class="pre">handle_events</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.Game.handle_events" title="Ссылка на это определение">¶</a></dt>
+<dd><p>обрабатывает события игры
+клавиши закрытие окна и тд</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.Game.quit_game">
+<span class="sig-name descname"><span class="pre">quit_game</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.Game.quit_game" title="Ссылка на это определение">¶</a></dt>
+<dd><p>выходит из игры
+закрывает pygame</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.Game.render">
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.Game.render" title="Ссылка на это определение">¶</a></dt>
+<dd><p>рисует всю игру
+фон сетку яблоко змейку интерфейс</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.Game.restart_game">
+<span class="sig-name descname"><span class="pre">restart_game</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.Game.restart_game" title="Ссылка на это определение">¶</a></dt>
+<dd><p>перезапускает игру
+сбрасывает все параметры</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.Game.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.Game.run" title="Ссылка на это определение">¶</a></dt>
+<dd><p>главный игровой цикл
+крутится пока игра не закончится</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.Game.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.Game.update" title="Ссылка на это определение">¶</a></dt>
+<dd><p>обновляет игровую логику
+движение змейки проверка столкновений</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.parse_arguments">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">parse_arguments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.parse_arguments" title="Ссылка на это определение">¶</a></dt>
+<dd><p>парсит аргументы командной строки
+имя скорость сложность</p>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">змейка</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Искать" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Навигация</h3>
+<p class="caption" role="heading"><span class="caption-text">Содержание:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">модули игры</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#game.base.GameObject"><code class="docutils literal notranslate"><span class="pre">GameObject</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#game.snake.Snake"><code class="docutils literal notranslate"><span class="pre">Snake</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#game.apple.Apple"><code class="docutils literal notranslate"><span class="pre">Apple</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#game.graphics.Graphics"><code class="docutils literal notranslate"><span class="pre">Graphics</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#game.score_manager.ScoreManager"><code class="docutils literal notranslate"><span class="pre">ScoreManager</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#main.Game"><code class="docutils literal notranslate"><span class="pre">Game</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#main.parse_arguments"><code class="docutils literal notranslate"><span class="pre">parse_arguments()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">использование игры</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="предыдущая глава">Документация игры «Змейка»</a></li>
+      <li>Next: <a href="usage.html" title="следующая глава">использование игры</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, саша и оля.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/modules.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

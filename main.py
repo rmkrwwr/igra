@@ -1,3 +1,8 @@
+"""
+главный файл игры
+запускает игру обрабатывает ввод
+"""
+
 import pygame
 import sys
 import argparse
@@ -6,24 +11,20 @@ from game.config import *
 from game.apple import Apple
 from game.score_manager import ScoreManager
 
-class TemporaryApple:
-    def __init__(self, player_name="Player", speed=10, difficulty="medium"):
-        """Инициализация игры"""
-        start_y = max(40, HEIGHT // 2)
-        start_y = (start_y // CELL_SIZE) * CELL_SIZE
-        self.snake = Snake(WIDTH // 2, start_y, CELL_SIZE)
-    def respawn(self, snake_body):
-        """Временный метод - потом заменит второй участник"""
-        self.rect.x = 300
-        self.rect.y = 300
-
-    def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
-
 
 class Game:
+    """
+    главный класс игры
+    управляет всем игровым процессом
+    """
+
     def __init__(self, player_name="Player", speed=10, difficulty="medium"):
-        """Инициализация игры"""
+        """
+        создает игру
+        player_name - имя игрока
+        speed - скорость игры
+        difficulty - сложность
+        """
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption('змейка')
@@ -46,7 +47,10 @@ class Game:
         self.frame_count = 0
 
     def handle_events(self):
-        """Обработка всех событий"""
+        """
+        обрабатывает события игры
+        клавиши закрытие окна и тд
+        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.quit_game()
@@ -54,7 +58,7 @@ class Game:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
                     self.paused = not self.paused
-                    print("Пауза:", self.paused)
+                    print("пауза:", self.paused)
                 if self.game_over and event.key == pygame.K_r:
                     self.restart_game()
                 if event.key == pygame.K_q:
@@ -70,7 +74,10 @@ class Game:
                         self.snake.change_direction(RIGHT)
 
     def update(self):
-        """Обновление игровой логики"""
+        """
+        обновляет игровую логику
+        движение змейки проверка столкновений
+        """
         if self.paused or self.game_over:
             return
         self.snake.move()
@@ -91,14 +98,19 @@ class Game:
             print(f"сохранение в файл")
 
     def draw_grid(self):
-        """Отрисовка сетки"""
+        """
+        рисует сетку поля
+        """
         for x in range(0, WIDTH, CELL_SIZE):
-            pygame.draw.line(self.screen, DARK_GREEN, (x, 40), (x, HEIGHT), 1)  # Изменено: начинаем с y=40
-        for y in range(40, HEIGHT, CELL_SIZE):  # Изменено: начинаем с y=40
+            pygame.draw.line(self.screen, DARK_GREEN, (x, 40), (x, HEIGHT), 1)
+        for y in range(40, HEIGHT, CELL_SIZE):
             pygame.draw.line(self.screen, DARK_GREEN, (0, y), (WIDTH, y), 1)
 
     def draw_ui(self):
-        """Отрисовка интерфейса"""
+        """
+        рисует интерфейс игры
+        счет панель паузу game over
+        """
         info_panel = pygame.Rect(0, 0, WIDTH, 40)
         pygame.draw.rect(self.screen, GRAY, info_panel)
         score_text = self.font.render(f'счёт: {self.score}', True, WHITE)
@@ -136,7 +148,10 @@ class Game:
             self.screen.blit(restart_text, restart_rect)
 
     def render(self):
-        """Отрисовка всей игры"""
+        """
+        рисует всю игру
+        фон сетку яблоко змейку интерфейс
+        """
         self.screen.fill(BLACK)
         self.draw_grid()
         self.apple.draw(self.screen)
@@ -145,7 +160,10 @@ class Game:
         pygame.display.flip()
 
     def restart_game(self):
-        """Перезапуск игры"""
+        """
+        перезапускает игру
+        сбрасывает все параметры
+        """
         self.snake = Snake(WIDTH // 2, HEIGHT // 2, CELL_SIZE)
         self.apple = Apple(CELL_SIZE, WIDTH, HEIGHT)
         self.score = 0
@@ -159,13 +177,19 @@ class Game:
                 print(f"  {i}. {score_data['name']}: {score_data['score']} ({score_data['date']})")
 
     def quit_game(self):
-        """Корректный выход из игры"""
+        """
+        выходит из игры
+        закрывает pygame
+        """
         pygame.quit()
         sys.exit()
 
     def run(self):
-        """Главный игровой цикл"""
-        print("Змейка")
+        """
+        главный игровой цикл
+        крутится пока игра не закончится
+        """
+        print("змейка")
         print(f"игрок: {self.player_name}")
         print(f"скорость: {self.game_speed} FPS")
         print(f"сложность: {self.difficulty}")
@@ -181,26 +205,29 @@ class Game:
 
 
 def parse_arguments():
-    """Парсинг аргументов командной строки"""
+    """
+    парсит аргументы командной строки
+    имя скорость сложность
+    """
     parser = argparse.ArgumentParser(
-        description='игра крутая Змейка',
+        description='игра крутая змейка',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog='''
-Примеры использования:
+примеры использования:
   python main.py
   python main.py --name "санк" --speed 15 --difficulty hard
         '''
     )
 
-    parser.add_argument('--name', type=str, default='Игрок',
-                        help='Имя игрока (по умолчанию: "Игрок")')
+    parser.add_argument('--name', type=str, default='игрок',
+                        help='имя игрока (по умолчанию: "игрок")')
 
     parser.add_argument('--speed', type=int, default=10,
-                        help='Скорость игры в FPS (по умолчанию: 10)')
+                        help='скорость игры в FPS (по умолчанию: 10)')
 
     parser.add_argument('--difficulty', type=str, default='medium',
                         choices=['easy', 'medium', 'hard'],
-                        help='Уровень сложности (по умолчанию: medium)')
+                        help='уровень сложности (по умолчанию: medium)')
 
     return parser.parse_args()
 

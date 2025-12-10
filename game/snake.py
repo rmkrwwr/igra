@@ -1,18 +1,36 @@
+"""
+класс змейки
+реализует всю логику поведения
+змейки: движение, управление, рост, столкновения и отрисовку.
+Класс управляет телом змейки как списком сегментов и обеспечивает
+все необходимые взаимодействия с игровым миром
+"""
+
 import pygame
 from .config import *
 
+
 class Snake:
+    """
+    змейка в игре
+    двигается ест яблоки и все дела
+    """
+
     def __init__(self, x, y, size):
-        """Инициализация змейки"""
+        """
+        создает змейку
+        x y - где голова
+        size - размер клетки
+        """
         self.size = size
         self.direction = RIGHT
         self.length = INITIAL_LENGTH
 
-        #тело змейки как список прямоугольников
+        # тело как список прямоугольников
         self.body = []
         for i in range(self.length):
             segment = pygame.Rect(
-                x - i * size,  # следующий сегмент левее
+                x - i * size,
                 y,
                 size,
                 size
@@ -24,8 +42,11 @@ class Snake:
         self.head_color = (0, 200, 0)
 
     def move(self):
-        """Движение змейки вперед"""
-        # Голова - последний элемент в списке
+        """
+        двигает змейку вперед
+        если должен расти - добавляет сегмент
+        """
+        # голова - последний элемент
         head = self.body[-1].copy()
         head.x += self.direction[0] * self.size
         head.y += self.direction[1] * self.size
@@ -38,7 +59,11 @@ class Snake:
             self.length += 1
 
     def change_direction(self, new_direction):
-        """Изменение направления движения"""
+        """
+        меняет направление
+        new_direction - куда повернуть
+        нельзя повернуть на 180 градусов
+        """
         opposite_x = -self.direction[0]
         opposite_y = -self.direction[1]
 
@@ -46,11 +71,23 @@ class Snake:
             self.direction = new_direction
 
     def grow(self):
-        """Команда роста на следующем ходу"""
+        """
+        говорит что на следующем ходу нужно вырасти
+        Подготавливает змейку к росту на следующем шаге движения.
+
+        флаг grow_next_move в True что приведет к увеличению
+        длины змейки на 1 сегмент при следующем вызове метода move()
+        """
+
         self.grow_next_move = True
 
     def check_collision(self, width, height):
-        """Проверка столкновения с границами и с собой"""
+        """
+        проверяет столкновения
+        с границами и с собой
+        width height - размер поля
+        возвращает True если врезался
+        """
         head = self.body[-1]
         if (head.x < 0 or head.x >= width or
                 head.y < 40 or head.y >= height):
@@ -60,21 +97,35 @@ class Snake:
                 return True
 
         return False
+
     def check_apple_collision(self, apple_rect):
-        """Проверка столкновения с яблоком"""
+        """
+        проверяет съел ли яблоко
+        apple_rect - прямоугольник яблока
+        возвращает True если съел
+        """
         head = self.body[-1]
         return head.colliderect(apple_rect)
 
     def get_head_position(self):
-        """Получение позиции головы"""
+        """
+        возвращает где голова
+        """
         return (self.body[-1].x, self.body[-1].y)
 
     def get_positions(self):
-        """Получение всех позиций змейки (для отрисовки)"""
+        """
+        возвращает все позиции змейки
+        для отрисовки или еще чего
+        """
         return [(seg.x, seg.y) for seg in self.body]
 
     def draw(self, screen):
-        """Отрисовка змейки"""
+        """
+        рисует змейку
+        screen - куда рисовать
+        голова другого цвета
+        """
         for i, segment in enumerate(self.body):
             if i == len(self.body) - 1:
                 pygame.draw.rect(screen, self.head_color, segment)
@@ -83,5 +134,8 @@ class Snake:
             pygame.draw.rect(screen, DARK_GREEN, segment, 1)
 
     def reset(self, x, y):
-        """Сброс змейки в начальное состояние"""
+        """
+        сбрасывает змейку в начальное состояние
+        x y - новая позиция
+        """
         self.__init__(x, y, self.size)

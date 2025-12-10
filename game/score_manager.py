@@ -1,15 +1,32 @@
+"""
+менеджер результатов
+сохраняет и загружает счета
+"""
+
 import os
 from datetime import datetime
 
 
 class ScoreManager:
+    """
+    управляет счетами игроков
+    сохраняет в файл загружает из файла
+    """
+
     def __init__(self, filename='scores.txt'):
+        """
+        создает менеджер
+        filename - файл для сохранения
+        """
         self.filename = filename
         self.scores = []
         self.load_scores()
 
     def load_scores(self):
-        """Загрузка результатов из файла"""
+        """
+        загружает результаты из файла
+        если файла нет - ничего не делает
+        """
         if not os.path.exists(self.filename):
             return
 
@@ -27,10 +44,16 @@ class ScoreManager:
                             'date': date
                         })
         except Exception as e:
-            print(f"Ошибка загрузки результатов: {e}")
+            print(f"ошибка загрузки результатов: {e}")
 
     def save_score(self, name, score, difficulty):
-        """Сохранение нового результата"""
+        """
+        сохраняет новый результат
+        name - имя игрока
+        score - счет
+        difficulty - сложность
+        добавляет дату и время
+        """
         try:
             timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             with open(self.filename, 'a', encoding='utf-8') as f:
@@ -46,10 +69,14 @@ class ScoreManager:
             self.scores.sort(key=lambda x: x['score'], reverse=True)
 
         except Exception as e:
-            print(f"Ошибка сохранения результата: {e}")
+            print(f"ошибка сохранения результата: {e}")
 
     def get_high_score(self, difficulty=None):
-        """Получение рекорда"""
+        """
+        возвращает рекорд
+        difficulty - если указана то для этой сложности
+        иначе для всех
+        """
         if not self.scores:
             return 0
 
@@ -60,7 +87,11 @@ class ScoreManager:
             return max([s['score'] for s in self.scores])
 
     def get_top_scores(self, count=10, difficulty=None):
-        """Получение топ-N результатов"""
+        """
+        возвращает топ-N результатов
+        count - сколько результатов
+        difficulty - если указана то для этой сложности
+        """
         if difficulty:
             filtered = [s for s in self.scores if s['difficulty'] == difficulty]
             return sorted(filtered, key=lambda x: x['score'], reverse=True)[:count]
@@ -68,7 +99,11 @@ class ScoreManager:
             return self.scores[:count]
 
     def get_player_stats(self, player_name):
-        """Получение статистики игрока"""
+        """
+        возвращает статистику игрока
+        player_name - имя игрока
+        возвращает словарь с лучшим счетом общим числом игр и средним счетом
+        """
         player_scores = [s for s in self.scores if s['name'] == player_name]
         if not player_scores:
             return None
