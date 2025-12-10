@@ -25,7 +25,11 @@ class Game:
         """Инициализация игры"""
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        pygame.display.set_caption('Змейка - Участник 1')
+        pygame.display.set_caption('змейка')
+        start_x = (SCREEN_WIDTH // 2) // CELL_SIZE * CELL_SIZE
+        start_y = ((SCREEN_HEIGHT // 2) // CELL_SIZE * CELL_SIZE) + 40
+        self.snake = Snake(start_x, start_y, CELL_SIZE)
+        self.apple = Apple(CELL_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT)
         self.clock = pygame.time.Clock()
         self.player_name = player_name
         self.game_speed = speed
