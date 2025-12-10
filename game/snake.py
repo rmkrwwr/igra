@@ -50,19 +50,16 @@ class Snake:
         self.grow_next_move = True
 
     def check_collision(self, width, height):
-        """Проверка столкновений"""
-        head = self.body[-1]
-
-        if (head.left < 0 or head.right > width or
-                head.top < 0 or head.bottom > height):
+        head = self.body[0]
+        if (head.x < 0 or head.x >= width or
+                head.y < 40 or head.y >= height):
             return True
 
-        for segment in self.body[:-1]:
+        for segment in self.body[1:]:
             if head.colliderect(segment):
                 return True
 
         return False
-
     def check_apple_collision(self, apple_rect):
         """Проверка столкновения с яблоком"""
         head = self.body[-1]

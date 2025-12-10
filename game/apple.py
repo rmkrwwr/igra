@@ -12,21 +12,21 @@ class Apple(GameObject):
 
         # x как обычно, y начиная с 40
         x = random.randrange(0, max_x + 1, size)
-        y = random.randrange(40, max_y + 1, size)  # ИЗМЕНИЛОСЬ: начинаем с 40
+        y = random.randrange(40, max_y + 1, size)
 
         super().__init__(x, y, size, size, RED)
         self.size = size
         self.width = width
         self.height = height
         self.max_x = max_x
-        self.max_y = max_y - 40  # Учитываем что y начинается с 40
+        self.max_y = max_y  # Уже правильно
 
     def respawn(self, snake_body):
         max_attempts = 1000
 
         for attempt in range(max_attempts):
             x = random.randrange(0, self.max_x + 1, self.size)
-            y = random.randrange(40, self.max_y + 40 + 1, self.size)  # ИЗМЕНИЛОСЬ: начинаем с 40
+            y = random.randrange(40, self.max_y + 1, self.size)  # Убрали +40
 
             new_rect = pygame.Rect(x, y, self.size, self.size)
 
@@ -40,6 +40,8 @@ class Apple(GameObject):
                 self.rect.x = x
                 self.rect.y = y
                 return True
+
+        return False
 
 
     def draw(self, screen):

@@ -82,24 +82,14 @@ class Graphics:
         instruction_rect = instruction_text.get_rect(center=(self.width // 2, self.height // 2 + 20))
         screen.blit(instruction_text, instruction_rect)
 
-    def draw_grid(self):
+    def draw_grid(self, screen):
         """Отрисовка сетки - начинается ниже панели интерфейса"""
         for x in range(0, self.width, CELL_SIZE):
-            pygame.draw.line(self.screen, GRID_COLOR,
+            pygame.draw.line(screen, DARK_GREEN,
                              (x, 40), (x, self.height), 1)  # Начинаем с y=40
         for y in range(40, self.height, CELL_SIZE):  # Начинаем с y=40
-            pygame.draw.line(self.screen, GRID_COLOR,
+            pygame.draw.line(screen, DARK_GREEN,
                              (0, y), (self.width, y), 1)
-
-    def draw_ui(self, score, game_over=False):
-        """Отрисовка интерфейса - сверху"""
-        # Панель сверху (оставляем как есть)
-        pygame.draw.rect(self.screen, UI_BACKGROUND, (0, 0, self.width, 40))
-
-        # Счет
-        score_text = self.font.render(f"Score: {score}", True, WHITE)
-        self.screen.blit(score_text, (10, 5))
-
 
     def draw_snake(self, screen, snake_body):
         """Отрисовка змейки с улучшенной графикой"""

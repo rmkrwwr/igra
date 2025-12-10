@@ -11,7 +11,6 @@ from game.config import *
 def run_tests():
     """Запуск всех тестов"""
     print("это запуск тестов для проверочки")
-    print("=" * 40)
 
     pygame.init()
     print("инициализации змейки")
@@ -70,24 +69,10 @@ def run_tests():
     collision_possible = self_snake.check_collision(800, 600)
     print(f"столкновение: {collision_possible}")
     print("проверка столкновений работает!")
-
-    print("=" * 40)
     print("успешно")
     print("змейка работает правильно!")
 
-    print("\nдемка")
-    demo_snake = Snake(200, 200, 20)
-    print(f"Начальная позиция: {demo_snake.get_head_position()}")
-    print(f"Направление: {demo_snake.direction}")
-    print(f"Длина: {demo_snake.length}")
 
-    demo_snake.move()
-    print(f"После движения: {demo_snake.get_head_position()}")
-
-    demo_snake.change_direction(UP)
-    print(f"Новое направление: {demo_snake.direction}")
-
-    print("\nкод готов и с сашей норм должен работь!")
 
 
 if __name__ == '__main__':
