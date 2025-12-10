@@ -40,7 +40,7 @@ class GameDatabase:
                 """, (player_name, score, snake_length, apples_eaten))
 
                 self.conn.commit()
-                print(f"💾 Сохранено: {player_name} - {score}")
+                print(f" Сохранено: {player_name} - {score}")
                 return True
 
         except Exception as e:

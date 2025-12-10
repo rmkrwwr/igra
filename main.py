@@ -94,9 +94,8 @@ class Game:
 
         if self.snake.check_collision(WIDTH, HEIGHT):
             self.game_over = True
-            print(f"💀 Игра окончена! Финальный счёт: {self.score}")
+            print(f" Игра окончена! Финальный счёт: {self.score}")
 
-            # Сохраняем в PostgreSQL БД
             db.save_game_result(
                 player_name=self.player_name,
                 score=self.score,
@@ -111,7 +110,7 @@ class Game:
                 self.score,
                 self.difficulty
             )
-            print(f"💾 Сохранено в файл")
+            print(f" Сохранено в файл")
 
     def draw_grid(self):
         """
