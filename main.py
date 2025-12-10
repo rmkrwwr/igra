@@ -3,6 +3,7 @@
 запускает игру обрабатывает ввод
 """
 
+from game.database import db
 import pygame
 import sys
 import argparse
@@ -39,12 +40,15 @@ class Game:
         self.score = 0
         self.game_over = False
         self.paused = False
-        self.snake = Snake(WIDTH // 2, HEIGHT // 2, CELL_SIZE)
+        #self.snake = Snake(WIDTH // 2, HEIGHT // 2, CELL_SIZE)
         self.apple = Apple(CELL_SIZE, WIDTH, HEIGHT)
         self.score_manager = ScoreManager()
         self.font = pygame.font.Font(None, 36)
         self.big_font = pygame.font.Font(None, 72)
         self.frame_count = 0
+        self.player_name = "Player"
+        self.apples_eaten = 0
+        self.game_start_time = 0
 
     def handle_events(self):
         """
@@ -84,18 +88,30 @@ class Game:
         if self.snake.check_apple_collision(self.apple.rect):
             self.snake.grow()
             self.score += 10
+            self.apples_eaten += 1
             self.apple.respawn(self.snake.body)
             print(f"скушал яблочко! счёт: {self.score}")
 
         if self.snake.check_collision(WIDTH, HEIGHT):
             self.game_over = True
-            print(f"игра все твой финальный счёт: {self.score}")
+            print(f"💀 Игра окончена! Финальный счёт: {self.score}")
+
+            # Сохраняем в PostgreSQL БД
+            db.save_game_result(
+                player_name=self.player_name,
+                score=self.score,
+                snake_length=self.snake.length,
+                difficulty=self.difficulty,
+                apples_eaten=self.apples_eaten
+            )
+
+            # Сохраняем в файл (старая система)
             self.score_manager.save_score(
                 self.player_name,
                 self.score,
                 self.difficulty
             )
-            print(f"сохранение в файл")
+            print(f"💾 Сохранено в файл")
 
     def draw_grid(self):
         """
@@ -141,6 +157,9 @@ class Game:
             go_rect = game_over_text.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 50))
             self.screen.blit(game_over_text, go_rect)
             score_display = self.font.render(f'счёт: {self.score}', True, WHITE)
+            #time_display = self.font.render(f'Время: {self.game_duration} сек', True, CYAN)
+            #time_rect = time_display.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 30))
+            #self.screen.blit(time_display, time_rect)
             score_rect = score_display.get_rect(center=(WIDTH // 2, HEIGHT // 2))
             self.screen.blit(score_display, score_rect)
             restart_text = self.font.render('жми R для рестарта', True, YELLOW)
@@ -164,6 +183,7 @@ class Game:
         перезапускает игру
         сбрасывает все параметры
         """
+        self.game_start_time = pygame.time.get_ticks()
         self.snake = Snake(WIDTH // 2, HEIGHT // 2, CELL_SIZE)
         self.apple = Apple(CELL_SIZE, WIDTH, HEIGHT)
         self.score = 0
@@ -181,6 +201,7 @@ class Game:
         выходит из игры
         закрывает pygame
         """
+        db.close()
         pygame.quit()
         sys.exit()
 
