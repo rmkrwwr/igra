@@ -47,8 +47,12 @@ def run_tests():
     print("столкновения с границами")
     edge_snake = Snake(0, 0, 20)
     edge_snake.change_direction(LEFT)
-    edge_snake.move()
-    assert edge_snake.check_collision(800, 600) == True, "должно быть столкновение"
+    for i in range(3):
+        edge_snake.move()
+        print(f"  шаг {i + 1}: голова на {edge_snake.get_head_position()}")
+    collision = edge_snake.check_collision(800, 600)
+    print(f"  Столкновение после 3 движений: {collision}")
+    assert collision == True, "должно быть столкновение"
     print("хайп!")
 
     print("столкновения с собой")

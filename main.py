@@ -4,6 +4,7 @@ import argparse
 from game.snake import Snake
 from game.config import *
 from game.apple import Apple
+from game.score_manager import ScoreManager
 
 class TemporaryApple:
     def __init__(self, size, width, height):
@@ -34,6 +35,7 @@ class Game:
         self.paused = False
         self.snake = Snake(WIDTH // 2, HEIGHT // 2, CELL_SIZE)
         self.apple = Apple(CELL_SIZE, WIDTH, HEIGHT)
+        self.score_manager = ScoreManager()
         self.font = pygame.font.Font(None, 36)
         self.big_font = pygame.font.Font(None, 72)
         self.frame_count = 0
@@ -76,6 +78,12 @@ class Game:
         if self.snake.check_collision(WIDTH, HEIGHT):
             self.game_over = True
             print(f"игра все твой финальный счёт: {self.score}")
+            self.score_manager.save_score(
+                self.player_name,
+                self.score,
+                self.difficulty
+            )
+            print(f"сохранение в файл")
 
     def draw_grid(self):
         """Отрисовка сетки"""
@@ -90,6 +98,9 @@ class Game:
         pygame.draw.rect(self.screen, GRAY, info_panel)
         score_text = self.font.render(f'счёт: {self.score}', True, WHITE)
         self.screen.blit(score_text, (10, 10))
+        high_score = self.score_manager.get_high_score(self.difficulty)
+        high_text = self.font.render(f'рекорд: {high_score}', True, YELLOW)
+        self.screen.blit(high_text, (WIDTH // 40, 40))
         name_text = self.font.render(f'игрок: {self.player_name}', True, WHITE)
         self.screen.blit(name_text, (WIDTH - 200, 10))
         length_text = self.font.render(f'длина: {self.snake.length}', True, WHITE)
@@ -136,6 +147,11 @@ class Game:
         self.game_over = False
         self.paused = False
         print("перезапуск игры)")
+        top_scores = self.score_manager.get_top_scores(5, self.difficulty)
+        if top_scores:
+            print("топ 5")
+            for i, score_data in enumerate(top_scores, 1):
+                print(f"  {i}. {score_data['name']}: {score_data['score']} ({score_data['date']})")
 
     def quit_game(self):
         """Корректный выход из игры"""
