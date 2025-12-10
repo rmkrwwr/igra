@@ -86,8 +86,8 @@ class Graphics:
         """Отрисовка сетки - начинается ниже панели интерфейса"""
         for x in range(0, self.width, CELL_SIZE):
             pygame.draw.line(screen, DARK_GREEN,
-                             (x, 40), (x, self.height), 1)  # Начинаем с y=40
-        for y in range(40, self.height, CELL_SIZE):  # Начинаем с y=40
+                             (x, 40), (x, self.height), 1)
+        for y in range(40, self.height, CELL_SIZE):
             pygame.draw.line(screen, DARK_GREEN,
                              (0, y), (self.width, y), 1)
 

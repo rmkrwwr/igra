@@ -6,11 +6,9 @@ from .config import *
 
 class Apple(GameObject):
     def __init__(self, size, width, height):
-        # Яблоко должно спавниться НИЖЕ панели (y от 40)
         max_x = width - size
         max_y = height - size
 
-        # x как обычно, y начиная с 40
         x = random.randrange(0, max_x + 1, size)
         y = random.randrange(40, max_y + 1, size)
 
@@ -19,14 +17,14 @@ class Apple(GameObject):
         self.width = width
         self.height = height
         self.max_x = max_x
-        self.max_y = max_y  # Уже правильно
+        self.max_y = max_y
 
     def respawn(self, snake_body):
         max_attempts = 1000
 
         for attempt in range(max_attempts):
             x = random.randrange(0, self.max_x + 1, self.size)
-            y = random.randrange(40, self.max_y + 1, self.size)  # Убрали +40
+            y = random.randrange(40, self.max_y + 1, self.size)
 
             new_rect = pygame.Rect(x, y, self.size, self.size)
 
