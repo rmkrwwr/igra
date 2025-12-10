@@ -11,7 +11,6 @@ from game.config import *
 def run_tests():
     """Запуск всех тестов"""
     print("это запуск тестов для проверочки")
-    print("=" * 40)
 
     pygame.init()
     print("инициализации змейки")
@@ -47,12 +46,8 @@ def run_tests():
     print("столкновения с границами")
     edge_snake = Snake(0, 0, 20)
     edge_snake.change_direction(LEFT)
-    for i in range(3):
-        edge_snake.move()
-        print(f"  шаг {i + 1}: голова на {edge_snake.get_head_position()}")
-    collision = edge_snake.check_collision(800, 600)
-    print(f"  Столкновение после 3 движений: {collision}")
-    assert collision == True, "должно быть столкновение"
+    edge_snake.move()
+    assert edge_snake.check_collision(800, 600) == True, "должно быть столкновение"
     print("хайп!")
 
     print("столкновения с собой")
@@ -71,23 +66,10 @@ def run_tests():
     print(f"столкновение: {collision_possible}")
     print("проверка столкновений работает!")
 
-    print("=" * 40)
     print("успешно")
     print("змейка работает правильно!")
 
-    print("\nдемка")
-    demo_snake = Snake(200, 200, 20)
-    print(f"Начальная позиция: {demo_snake.get_head_position()}")
-    print(f"Направление: {demo_snake.direction}")
-    print(f"Длина: {demo_snake.length}")
 
-    demo_snake.move()
-    print(f"После движения: {demo_snake.get_head_position()}")
-
-    demo_snake.change_direction(UP)
-    print(f"Новое направление: {demo_snake.direction}")
-
-    print("\nкод готов и с сашей норм должен работь!")
 
 
 if __name__ == '__main__':

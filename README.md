@@ -29,7 +29,7 @@ python main.py --name "Тестер" --speed 8
 
 
 # мой тест (змея)
-python tests/test_snake.py
+python tests/test_shake.py
 
 # тест саши (яблоко и графика)
 python tests/test_apple.py
