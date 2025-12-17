@@ -19,7 +19,7 @@ class SoundManager:
             except Exception as e:
                 print(f" Ошибка загрузки {name}: {e}")
         else:
-            print(f"⚠ Файл не найден: {filepath}")
+            print(f" Файл не найден: {filepath}")
 
         self.sounds[name] = None
         return False

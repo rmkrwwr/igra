@@ -50,7 +50,12 @@ def test_apple_collision_avoidance():
     apple.respawn(snake_body)
 
     for segment in snake_body:
-        assert not apple.collides_with(segment)
+        class TempObject:
+            def __init__(self, rect):
+                self.rect = rect
+
+        temp_obj = TempObject(segment)
+        assert not apple.collides_with(temp_obj)
     print("✓ Тест избегания столкновений пройден")
 
 
